@@ -1,0 +1,82 @@
+scalar UUID
+
+enum FuelType {
+    GASOLINE
+    DIESEL
+    ELECTRIC
+    GASOLINE_HYBRID
+    DIESEL_HYBRID
+    HYBRID_PLUGIN
+}
+
+enum VehicleSegment {
+    CABRIO
+    ESTATE
+    CITY
+    COUPE
+    MINIVAN
+    SEDAN
+    SUV
+    OFFROAD
+    UTILITARIAN
+}
+
+type Vehicle {
+    id: UUID!
+    brand: String!
+    model: String!
+    segment: VehicleSegment!
+    price: Float!
+    kms: Int!
+    month: Int!
+    year: Int!
+    fuel: FuelType!
+    cm3: Int
+    kwh: Float
+    hp: Int!
+    consumption: String!
+    imageUrls: [String!]!
+}
+
+input VehicleInput {
+    brand: String!
+    model: String!
+    segment: VehicleSegment!
+    price: Float!
+    kms: Int!
+    month: Int!
+    year: Int!
+    fuel: FuelType!
+    cm3: Int
+    kwh: Float
+    hp: Int!
+    consumption: String!
+}
+
+input VehicleUpdateInput {
+    id: UUID!
+    brand: String
+    model: String
+    segment: VehicleSegment
+    price: Float
+    kms: Int
+    month: Int
+    year: Int
+    fuel: FuelType
+    cm3: Int
+    kwh: Float
+    hp: Int
+    consumption: String
+}
+
+type Query {
+    getAllVehicles: [Vehicle!]!
+    getVehicleById(id: UUID!): Vehicle
+    getVehicleImages(vehicleId: UUID!): [String!]!
+}
+
+type Mutation {
+    createVehicle(input: VehicleInput!): Vehicle!
+    updateVehicle(input: VehicleUpdateInput!): Vehicle
+    deleteVehicle(id: UUID!): Boolean!
+}

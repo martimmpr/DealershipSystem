@@ -1,3 +1,38 @@
 spring:
   application:
     name: Dealership Backend
+  datasource:
+    url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/${DB_NAME:dealership_db}
+    username: ${DB_USERNAME:postgres}
+    password: ${DB_PASSWORD:password}
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        '[format_sql]': true
+  graphql:
+    graphiql:
+      enabled: true
+      path: /graphiql
+    http:
+      path: /graphql
+    cors:
+      allowed-origins: "*"
+      allowed-methods: GET,POST
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
+
+minio:
+  endpoint: ${MINIO_ENDPOINT:http://localhost:9000}
+  access-key: ${MINIO_ACCESS_KEY:minioadmin}
+  secret-key: ${MINIO_SECRET_KEY:minioadmin}
+  bucket-name: ${MINIO_BUCKET_NAME:vehicles}
+
+server:
+  port: ${SERVER_PORT:8080}
