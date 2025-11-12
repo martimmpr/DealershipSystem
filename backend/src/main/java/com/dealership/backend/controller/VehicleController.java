@@ -26,6 +26,16 @@ public class VehicleController {
         this.imageService = imageService;
     }
 
+    @MutationMapping
+    public Vehicle createVehicle(@Argument("input") @Valid VehicleInput input) {
+        return vehicleService.createVehicle(input);
+    }
+
+    @QueryMapping
+    public Vehicle getVehicleById(@Argument UUID id) {
+        return vehicleService.getVehicleById(id).orElse(null);
+    }
+
     @QueryMapping
     public List<Vehicle> getAllVehicles() {
         return vehicleService.getAllVehicles();
@@ -34,16 +44,6 @@ public class VehicleController {
     @QueryMapping
     public List<Vehicle> getAllAvailableVehicles() {
         return vehicleService.getAllAvailableVehicles();
-    }
-
-    @QueryMapping
-    public Vehicle getVehicleById(@Argument UUID id) {
-        return vehicleService.getVehicleById(id).orElse(null);
-    }
-
-    @MutationMapping
-    public Vehicle createVehicle(@Argument("input") @Valid VehicleInput input) {
-        return vehicleService.createVehicle(input);
     }
 
     @MutationMapping
