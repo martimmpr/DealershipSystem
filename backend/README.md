@@ -29,7 +29,10 @@ Java-based backend system for vehicle dealership management with GraphQL API and
 | `cm3` | INTEGER | Engine displacement | Nullable, Required for non-electric |
 | `kwh` | DOUBLE | Battery capacity | Nullable, Required for electric/hybrid |
 | `hp` | INTEGER | Horsepower | NOT NULL, Positive |
+| `transmission` | VARCHAR | Transmission type | NOT NULL, Valid transmission only |
 | `consumption` | VARCHAR | Fuel/energy consumption | NOT NULL |
+| `sold` | BOOLEAN | Vehicle sold status | NOT NULL, Default false |
+| `deleted` | BOOLEAN | Vehicle deleted status | NOT NULL, Default false |
 
 ### Valid Fuel Types
 - `gasoline` - Gasoline engines (requires cm3)
@@ -49,6 +52,10 @@ Java-based backend system for vehicle dealership management with GraphQL API and
 - `suv` - Sport utility vehicles
 - `offroad` - Off-road specialized vehicles
 - `utilitarian` - Commercial/utility vehicles
+
+### Valid Transmission Types
+- `manual` - Manual transmission
+- `automatic` - Automatic transmission
 
 ## API Documentation
 
@@ -72,6 +79,7 @@ mutation {
     fuel: GASOLINE
     cm3: 1800
     hp: 140
+    transmission: MANUAL
     consumption: "6.5L/100km"
   }) {
     id
@@ -114,6 +122,32 @@ query {
     cm3
     kwh
     hp
+    transmission
+    consumption
+    sold
+    deleted
+    imageUrls
+  }
+}
+```
+
+**Get All Available Vehicles (not sold and not deleted):**
+```graphql
+query {
+  getAllAvailableVehicles {
+    id
+    brand
+    model
+    segment
+    price
+    kms
+    month
+    year
+    fuel
+    cm3
+    kwh
+    hp
+    transmission
     consumption
     imageUrls
   }
@@ -127,6 +161,7 @@ mutation {
     id: "123e4567-e89b-12d3-a456-426614174000"
     price: 23000.0
     kms: 5000
+    sold: true
   }) {
     id
     brand
@@ -139,8 +174,14 @@ mutation {
 
 **Delete Vehicle:**
 ```graphql
+# Soft delete (Default / hardDelete: false)
 mutation {
   deleteVehicle(id: "123e4567-e89b-12d3-a456-426614174000")
+}
+
+# Hard delete (Removes from database and MinIO)
+mutation {
+  deleteVehicle(id: "123e4567-e89b-12d3-a456-426614174000", hardDelete: true)
 }
 ```
 

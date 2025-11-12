@@ -35,7 +35,10 @@ public class VehicleService {
         vehicle.setCm3(input.getCm3());
         vehicle.setKwh(input.getKwh());
         vehicle.setHp(input.getHp());
+        vehicle.setTransmission(input.getTransmission());
         vehicle.setConsumption(input.getConsumption());
+        vehicle.setSold(false);
+        vehicle.setDeleted(false);
         
         return vehicleRepository.save(vehicle);
     }
@@ -43,6 +46,11 @@ public class VehicleService {
     @Transactional(readOnly = true)
     public List<Vehicle> getAllVehicles() {
         return vehicleRepository.findAll();
+    }
+
+    @Transactional(readOnly = true)
+    public List<Vehicle> getAllAvailableVehicles() {
+        return vehicleRepository.findByDeletedFalseAndSoldFalse();
     }
 
     @Transactional(readOnly = true)
@@ -67,7 +75,10 @@ public class VehicleService {
             if (input.getCm3() != null) vehicle.setCm3(input.getCm3());
             if (input.getKwh() != null) vehicle.setKwh(input.getKwh());
             if (input.getHp() != null) vehicle.setHp(input.getHp());
+            if (input.getTransmission() != null) vehicle.setTransmission(input.getTransmission());
             if (input.getConsumption() != null) vehicle.setConsumption(input.getConsumption());
+            if (input.getSold() != null) vehicle.setSold(input.getSold());
+            if (input.getDeleted() != null) vehicle.setDeleted(input.getDeleted());
             
             return Optional.of(vehicleRepository.save(vehicle));
         }
@@ -76,14 +87,24 @@ public class VehicleService {
     }
 
     public boolean deleteVehicle(UUID id) {
-        if (vehicleRepository.existsById(id)) {
-            try {
-                imageService.deleteAllVehicleImages(id);
-            } catch (Exception e) {
-                System.err.println("Error deleting vehicle images: " + e.getMessage());
+        return deleteVehicle(id, true); // Soft delete by default
+    }
+
+    public boolean deleteVehicle(UUID id, boolean softDelete) {
+        Optional<Vehicle> vehicleOpt = vehicleRepository.findById(id);
+        if (vehicleOpt.isPresent()) {
+            if (softDelete) {
+                Vehicle vehicle = vehicleOpt.get();
+                vehicle.setDeleted(true);
+                vehicleRepository.save(vehicle);
+            } else {
+                try {
+                    imageService.deleteAllVehicleImages(id);
+                } catch (Exception e) {
+                    System.err.println("Error deleting vehicle images: " + e.getMessage());
+                }
+                vehicleRepository.deleteById(id);
             }
-            
-            vehicleRepository.deleteById(id);
             return true;
         }
         return false;

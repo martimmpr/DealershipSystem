@@ -44,11 +44,20 @@ public class Vehicle {
     private Integer hp;
     
     @Column(nullable = false)
+    private String transmission;
+    
+    @Column(nullable = false)
     private String consumption;
+    
+    @Column(nullable = false, columnDefinition = "boolean default false")
+    private Boolean sold = false;
+    
+    @Column(nullable = false, columnDefinition = "boolean default false")
+    private Boolean deleted = false;
     
     public Vehicle() {}
 
-    public Vehicle(String brand, String model, String segment, Double price, Integer kms, Integer month, Integer year, String fuel, Integer cm3, Double kwh, Integer hp, String consumption) {
+    public Vehicle(String brand, String model, String segment, Double price, Integer kms, Integer month, Integer year, String fuel, Integer cm3, Double kwh, Integer hp, String transmission, String consumption) {
         this.brand = brand;
         this.model = model;
         this.segment = segment;
@@ -60,7 +69,10 @@ public class Vehicle {
         this.cm3 = cm3;
         this.kwh = kwh;
         this.hp = hp;
+        this.transmission = transmission;
         this.consumption = consumption;
+        this.sold = false;
+        this.deleted = false;
     }
     
     public UUID getId() {
@@ -159,11 +171,35 @@ public class Vehicle {
         this.hp = hp;
     }
 
+    public String getTransmission() {
+        return transmission;
+    }
+
+    public void setTransmission(String transmission) {
+        this.transmission = transmission;
+    }
+
     public String getConsumption() {
         return consumption;
     }
 
     public void setConsumption(String consumption) {
         this.consumption = consumption;
+    }
+
+    public Boolean getSold() {
+        return sold;
+    }
+
+    public void setSold(Boolean sold) {
+        this.sold = sold;
+    }
+
+    public Boolean getDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(Boolean deleted) {
+        this.deleted = deleted;
     }
 }

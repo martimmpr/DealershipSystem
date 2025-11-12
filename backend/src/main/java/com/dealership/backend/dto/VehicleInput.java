@@ -8,6 +8,7 @@ import jakarta.validation.constraints.Max;
 import com.dealership.backend.validation.ValidFuelType;
 import com.dealership.backend.validation.ValidVehicleSegment;
 import com.dealership.backend.validation.ValidVehicleEngine;
+import com.dealership.backend.validation.ValidTransmission;
 
 @ValidVehicleEngine
 public class VehicleInput {
@@ -50,12 +51,16 @@ public class VehicleInput {
     @Positive(message = "Horsepower must be positive!")
     private Integer hp;
     
+    @NotBlank(message = "Transmission is required!")
+    @ValidTransmission
+    private String transmission;
+    
     @NotBlank(message = "Consumption is required!")
     private String consumption;
 
     public VehicleInput() {}
 
-    public VehicleInput(String brand, String model, String segment, Double price, Integer kms, Integer month, Integer year, String fuel, Integer cm3, Double kwh, Integer hp, String consumption) {
+    public VehicleInput(String brand, String model, String segment, Double price, Integer kms, Integer month, Integer year, String fuel, Integer cm3, Double kwh, Integer hp, String transmission, String consumption) {
         this.brand = brand;
         this.model = model;
         this.segment = segment;
@@ -67,6 +72,7 @@ public class VehicleInput {
         this.cm3 = cm3;
         this.kwh = kwh;
         this.hp = hp;
+        this.transmission = transmission;
         this.consumption = consumption;
     }
 
@@ -156,6 +162,14 @@ public class VehicleInput {
 
     public void setHp(Integer hp) {
         this.hp = hp;
+    }
+
+    public String getTransmission() {
+        return transmission;
+    }
+
+    public void setTransmission(String transmission) {
+        this.transmission = transmission;
     }
 
     public String getConsumption() {

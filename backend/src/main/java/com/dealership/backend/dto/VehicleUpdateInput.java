@@ -4,6 +4,7 @@ import java.util.UUID;
 import com.dealership.backend.validation.ValidFuelType;
 import com.dealership.backend.validation.ValidVehicleSegment;
 import com.dealership.backend.validation.ValidVehicleUpdateEngine;
+import com.dealership.backend.validation.ValidTransmission;
 
 @ValidVehicleUpdateEngine
 public class VehicleUpdateInput {
@@ -23,11 +24,16 @@ public class VehicleUpdateInput {
     private Integer cm3;
     private Double kwh;
     private Integer hp;
+    
+    @ValidTransmission
+    private String transmission;
     private String consumption;
+    private Boolean sold;
+    private Boolean deleted;
 
     public VehicleUpdateInput() {}
 
-    public VehicleUpdateInput(UUID id, String brand, String model, String segment, Double price, Integer kms, Integer month, Integer year, String fuel, Integer cm3, Double kwh, Integer hp, String consumption) {
+    public VehicleUpdateInput(UUID id, String brand, String model, String segment, Double price, Integer kms, Integer month, Integer year, String fuel, Integer cm3, Double kwh, Integer hp, String transmission, String consumption, Boolean sold, Boolean deleted) {
         this.id = id;
         this.brand = brand;
         this.model = model;
@@ -40,7 +46,10 @@ public class VehicleUpdateInput {
         this.cm3 = cm3;
         this.kwh = kwh;
         this.hp = hp;
+        this.transmission = transmission;
         this.consumption = consumption;
+        this.sold = sold;
+        this.deleted = deleted;
     }
 
     public UUID getId() {
@@ -139,11 +148,35 @@ public class VehicleUpdateInput {
         this.hp = hp;
     }
 
+    public String getTransmission() {
+        return transmission;
+    }
+
+    public void setTransmission(String transmission) {
+        this.transmission = transmission;
+    }
+
     public String getConsumption() {
         return consumption;
     }
 
     public void setConsumption(String consumption) {
         this.consumption = consumption;
+    }
+
+    public Boolean getSold() {
+        return sold;
+    }
+
+    public void setSold(Boolean sold) {
+        this.sold = sold;
+    }
+
+    public Boolean getDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(Boolean deleted) {
+        this.deleted = deleted;
     }
 }

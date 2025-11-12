@@ -21,6 +21,11 @@ enum VehicleSegment {
     UTILITARIAN
 }
 
+enum Transmission {
+    MANUAL
+    AUTOMATIC
+}
+
 type Vehicle {
     id: UUID!
     brand: String!
@@ -34,7 +39,10 @@ type Vehicle {
     cm3: Int
     kwh: Float
     hp: Int!
+    transmission: Transmission!
     consumption: String!
+    sold: Boolean!
+    deleted: Boolean!
     imageUrls: [String!]!
 }
 
@@ -50,6 +58,7 @@ input VehicleInput {
     cm3: Int
     kwh: Float
     hp: Int!
+    transmission: Transmission!
     consumption: String!
 }
 
@@ -66,11 +75,15 @@ input VehicleUpdateInput {
     cm3: Int
     kwh: Float
     hp: Int
+    transmission: Transmission
     consumption: String
+    sold: Boolean
+    deleted: Boolean
 }
 
 type Query {
     getAllVehicles: [Vehicle!]!
+    getAllAvailableVehicles: [Vehicle!]!
     getVehicleById(id: UUID!): Vehicle
     getVehicleImages(vehicleId: UUID!): [String!]!
 }
@@ -78,5 +91,5 @@ type Query {
 type Mutation {
     createVehicle(input: VehicleInput!): Vehicle!
     updateVehicle(input: VehicleUpdateInput!): Vehicle
-    deleteVehicle(id: UUID!): Boolean!
+    deleteVehicle(id: UUID!, hardDelete: Boolean): Boolean!
 }
